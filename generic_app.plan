@@ -1,0 +1,17 @@
+export HOME=/home/jenkins
+mkdir -p {BUILD,RPMS,SOURCES,SPECS,SRPMS,tmp}
+git clone https://github.com/foo/genapp_src.git SOURCES/genapp
+cd SOURCES/genapp
+git fetch
+_tag=$(git tag -l 1.4.* | sort -runt. --key=3 |head -n1)
+export genapp_name="${_tag}"
+
+git checkout "${_tag}"
+cd ../..
+
+sudo yum clean all
+
+sudo yum -y install gendep
+
+rpmbuild -ba -vv generic_app.spec
+cp RPMS/$arch/*.rpm /var/repo/$distro/$dver/$arch/$_env

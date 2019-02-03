@@ -1,0 +1,7 @@
+export HOME=/home/jenkins
+mkdir -p {BUILD,RPMS,SOURCES,SPECS,SRPMS,tmp}
+
+export gendep_ver=# script to determine latest source code release version
+cp $_latest SOURCES/.
+rpmbuild -ba generic_dep.spec
+cp RPMS/$arch/*.rpm /var/repo/$distro/$dver/$arch/$_env
